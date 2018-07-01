@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+    
+    <context:property-placeholder ignore-unresolvable="true" location="classpath:properties/*.properties" />
+    
+    <context:component-scan base-package="com.nap.controller,com.nap.exception" />
+    
+    <mvc:annotation-driven />
+
+    <!-- mapping 不能写为/** 因为/**使 捕捉NoHandlerFoundException不起作用  -->
+    <mvc:resources location="/static/" mapping="/static/**" />
+    
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="suffix" value=".jsp"/>
+        <property name="prefix" value="/WEB-INF/views/"/>
+    </bean>
+    
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 设定默认编码 -->
+        <property name="defaultEncoding" value="UTF-8"></property>
+        <!-- 设定文件上传的最大值5MB，5*1024*1024 -->
+        <property name="maxUploadSize" value="5242880"></property>
+    </bean>
+    
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.nap.interceptor.TimeCountInteceptor" />
+        </mvc:interceptor>
+        <!-- 自动登录拦截 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.nap.interceptor.AutoLoginInteceptor">
+            </bean>
+        </mvc:interceptor>
+        <!-- 权限拦截 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/user/mine/**"/>
+            <mvc:mapping path="/pay/mine/**"/>
+            <mvc:exclude-mapping path="/user/mine/download/**"/><!-- 无文件服务器 后台管理只能通过调用前台接口来下载文件 ，不拦截该下载路径 -->
+            <bean class="com.nap.interceptor.ResourceVisitInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>    
+    
+    
+</beans>

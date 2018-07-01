@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nap.mapper.extend.GdCommentMapperExtend">
+
+
+    <select id="selectByPidOne" parameterType="GdCommentQueryVo" resultType="GdCommentExtend">
+        SELECT c.comment_id commentId,c.parent_id parentId,c.user_id userId,c.content,c.commenttime,
+        u.username
+        FROM gd_comment c LEFT JOIN gd_user u ON c.user_id=u.user_id
+        WHERE c.project_id = #{projectId} and c.parent_id is null
+        <if test="orderBy != null and orderBy != ''">
+            order by c.${orderBy}
+        </if>
+    </select>
+
+    <select id="selectByPidCascade" parameterType="Integer" resultType="GdCommentExtend">
+        SELECT c.comment_id commentId,c.parent_id
+        parentId,c.user_id userId,c.content,c.commenttime,
+        IFNULL(u.username,'匿名') username,IFNULL(u2.username,'匿名') username2
+        FROM gd_comment c LEFT JOIN gd_user u ON c.user_id=u.user_id
+        LEFT JOIN gd_comment c2 ON
+        c.parent_id=c2.comment_id
+        LEFT JOIN gd_user u2 ON c2.user_id = u2.user_id
+        WHERE c.parent_id = #{_parameter}
+    </select>
+    
+    <select id="countByProjectId" parameterType="Integer" resultType="Long">
+        select count(*) from gd_comment where project_id=#{_parameter}
+    </select>
+
+</mapper>

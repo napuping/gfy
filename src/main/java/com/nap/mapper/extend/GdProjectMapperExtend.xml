@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nap.mapper.extend.GdProjectMapperExtend" >
+  
+  
+  <select id="query" parameterType="GdProjectQueryVo" resultType="GdProjectExtend">
+    
+    select * from 
+    (
+    SELECT  
+        p.project_id projectId,p.projectname,p.projectdesc,p.committime,p.ordernum,
+        p.pflag,p.filepath,p.iscomment,
+        p.status, (select text from gd_dic where pcode = 'pstatus' and code = p.status) statustext, 
+        p.typecode,(SELECT t1.showtext  FROM gd_type t1 WHERE t1.tcode = p.typecode) typetext,
+        p.lancode,(SELECT t2.showtext  FROM gd_type t2 WHERE t2.tcode = p.lancode) lantext,
+        (SELECT COUNT(*) FROM gd_comment c WHERE c.project_id = p.project_id) comments,
+        (SELECT COUNT(*) FROM gd_look l WHERE l.project_id = p.project_id) look,
+        u.username,
+        m.totalmoney,m.premoney,m.remainmoney
+        FROM gd_project p LEFT JOIN gd_user u ON p.user_id = u.user_id
+        left join gd_money m on m.money_id = p.project_id
+        
+    <!-- 条件过滤 -->
+    <where>
+        <if test="typecode != null and typecode != ''">p.typecode='${typecode}'</if>
+        <if test="status != null and status != ''">and p.status in ${status} </if>
+        <if test="lancode != null and lancode != ''">and p.lancode='${lancode}'</if>
+        <if test="ordernum != null and ordernum != ''">and p.ordernum=#{ordernum}</if>
+        <if test="userId != null and userId != ''">and p.user_id=#{userId}</if>
+        <if test="pflag != null and pflag != ''">and p.pflag = '${pflag}'</if>
+    </where>
+    ) tmp
+    <!-- 排序 -->
+    <if test="orderBy != null and orderBy != ''">order by tmp.${orderBy} desc</if>
+    <if test="orderBy == null or orderBy == ''">order by tmp.committime desc</if>
+    
+  </select>
+  
+  <select id="queryById" parameterType="Integer" resultType="GdProjectExtend">
+     SELECT  
+        p.project_id projectId,p.projectname,p.projectdesc,p.committime,p.ordernum,
+        p.pflag,p.filepath,p.iscomment,p.user_id userId,
+        p.status, (select text from gd_dic where pcode = 'pstatus' and code = p.status) statustext, 
+        p.typecode,(SELECT t1.showtext  FROM gd_type t1 WHERE t1.tcode = p.typecode) typetext,
+        p.lancode,(SELECT t2.showtext  FROM gd_type t2 WHERE t2.tcode = p.lancode) lantext,
+        (SELECT COUNT(*) FROM gd_comment c WHERE c.project_id = p.project_id) comments,
+        (SELECT COUNT(*) FROM gd_look l WHERE l.project_id = p.project_id) look,
+        u.username,
+        m.totalmoney,m.premoney,m.remainmoney
+        FROM gd_project p LEFT JOIN gd_user u ON p.user_id = u.user_id
+        left join gd_money m on m.money_id = p.project_id
+        where p.project_id=#{projectId}
+  </select>
+  
+  <delete id="deleteById" parameterType="Integer">
+    <!-- 执行多条sql语句 
+         //删除关联的金额信息
+        //删除关联的支付信息
+        //删除关联的评论信息
+        //删除相关的进度信息
+        //删除关联的浏览信息
+        //删除关联的文档
+    -->
+    delete from gd_money where money_id=#{_parameter};
+    delete from gd_pay  where project_id=#{_parameter};
+    delete from gd_comment where project_id=#{_parameter};
+    delete from gd_progress  where project_id=#{_parameter};
+    delete from gd_look  where project_id=#{_parameter};
+    delete from gd_project  where project_id=#{_parameter};
+  </delete>
+  
+</mapper>

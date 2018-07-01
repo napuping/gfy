@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nap.mapper.GdProjectMapper" >
+  <resultMap id="BaseResultMap" type="com.nap.entity.po.GdProject" >
+    <id column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="projectname" property="projectname" jdbcType="VARCHAR" />
+    <result column="projectdesc" property="projectdesc" jdbcType="VARCHAR" />
+    <result column="filepath" property="filepath" jdbcType="VARCHAR" />
+    <result column="committime" property="committime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="typecode" property="typecode" jdbcType="VARCHAR" />
+    <result column="lancode" property="lancode" jdbcType="VARCHAR" />
+    <result column="ordernum" property="ordernum" jdbcType="VARCHAR" />
+    <result column="isanonymous" property="isanonymous" jdbcType="CHAR" />
+    <result column="pflag" property="pflag" jdbcType="CHAR" />
+    <result column="contactway" property="contactway" jdbcType="VARCHAR" />
+    <result column="iscomment" property="iscomment" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    project_id, projectname, projectdesc, filepath, committime, status, user_id, typecode, 
+    lancode, ordernum, isanonymous, pflag, contactway, iscomment
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.nap.entity.po.GdProjectExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from gd_project
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from gd_project
+    where project_id = #{projectId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from gd_project
+    where project_id = #{projectId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.nap.entity.po.GdProjectExample" >
+    delete from gd_project
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.nap.entity.po.GdProject" >
+    insert into gd_project (project_id, projectname, projectdesc, 
+      filepath, committime, status, 
+      user_id, typecode, lancode, 
+      ordernum, isanonymous, pflag, 
+      contactway, iscomment)
+    values (#{projectId,jdbcType=INTEGER}, #{projectname,jdbcType=VARCHAR}, #{projectdesc,jdbcType=VARCHAR}, 
+      #{filepath,jdbcType=VARCHAR}, #{committime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=INTEGER}, #{typecode,jdbcType=VARCHAR}, #{lancode,jdbcType=VARCHAR}, 
+      #{ordernum,jdbcType=VARCHAR}, #{isanonymous,jdbcType=CHAR}, #{pflag,jdbcType=CHAR}, 
+      #{contactway,jdbcType=VARCHAR}, #{iscomment,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nap.entity.po.GdProject" >
+    insert into gd_project
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="projectname != null" >
+        projectname,
+      </if>
+      <if test="projectdesc != null" >
+        projectdesc,
+      </if>
+      <if test="filepath != null" >
+        filepath,
+      </if>
+      <if test="committime != null" >
+        committime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="typecode != null" >
+        typecode,
+      </if>
+      <if test="lancode != null" >
+        lancode,
+      </if>
+      <if test="ordernum != null" >
+        ordernum,
+      </if>
+      <if test="isanonymous != null" >
+        isanonymous,
+      </if>
+      <if test="pflag != null" >
+        pflag,
+      </if>
+      <if test="contactway != null" >
+        contactway,
+      </if>
+      <if test="iscomment != null" >
+        iscomment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="projectname != null" >
+        #{projectname,jdbcType=VARCHAR},
+      </if>
+      <if test="projectdesc != null" >
+        #{projectdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="filepath != null" >
+        #{filepath,jdbcType=VARCHAR},
+      </if>
+      <if test="committime != null" >
+        #{committime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="typecode != null" >
+        #{typecode,jdbcType=VARCHAR},
+      </if>
+      <if test="lancode != null" >
+        #{lancode,jdbcType=VARCHAR},
+      </if>
+      <if test="ordernum != null" >
+        #{ordernum,jdbcType=VARCHAR},
+      </if>
+      <if test="isanonymous != null" >
+        #{isanonymous,jdbcType=CHAR},
+      </if>
+      <if test="pflag != null" >
+        #{pflag,jdbcType=CHAR},
+      </if>
+      <if test="contactway != null" >
+        #{contactway,jdbcType=VARCHAR},
+      </if>
+      <if test="iscomment != null" >
+        #{iscomment,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.nap.entity.po.GdProjectExample" resultType="java.lang.Integer" >
+    select count(*) from gd_project
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update gd_project
+    <set >
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectname != null" >
+        projectname = #{record.projectname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectdesc != null" >
+        projectdesc = #{record.projectdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.filepath != null" >
+        filepath = #{record.filepath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.committime != null" >
+        committime = #{record.committime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.typecode != null" >
+        typecode = #{record.typecode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lancode != null" >
+        lancode = #{record.lancode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ordernum != null" >
+        ordernum = #{record.ordernum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isanonymous != null" >
+        isanonymous = #{record.isanonymous,jdbcType=CHAR},
+      </if>
+      <if test="record.pflag != null" >
+        pflag = #{record.pflag,jdbcType=CHAR},
+      </if>
+      <if test="record.contactway != null" >
+        contactway = #{record.contactway,jdbcType=VARCHAR},
+      </if>
+      <if test="record.iscomment != null" >
+        iscomment = #{record.iscomment,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update gd_project
+    set project_id = #{record.projectId,jdbcType=INTEGER},
+      projectname = #{record.projectname,jdbcType=VARCHAR},
+      projectdesc = #{record.projectdesc,jdbcType=VARCHAR},
+      filepath = #{record.filepath,jdbcType=VARCHAR},
+      committime = #{record.committime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      typecode = #{record.typecode,jdbcType=VARCHAR},
+      lancode = #{record.lancode,jdbcType=VARCHAR},
+      ordernum = #{record.ordernum,jdbcType=VARCHAR},
+      isanonymous = #{record.isanonymous,jdbcType=CHAR},
+      pflag = #{record.pflag,jdbcType=CHAR},
+      contactway = #{record.contactway,jdbcType=VARCHAR},
+      iscomment = #{record.iscomment,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nap.entity.po.GdProject" >
+    update gd_project
+    <set >
+      <if test="projectname != null" >
+        projectname = #{projectname,jdbcType=VARCHAR},
+      </if>
+      <if test="projectdesc != null" >
+        projectdesc = #{projectdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="filepath != null" >
+        filepath = #{filepath,jdbcType=VARCHAR},
+      </if>
+      <if test="committime != null" >
+        committime = #{committime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="typecode != null" >
+        typecode = #{typecode,jdbcType=VARCHAR},
+      </if>
+      <if test="lancode != null" >
+        lancode = #{lancode,jdbcType=VARCHAR},
+      </if>
+      <if test="ordernum != null" >
+        ordernum = #{ordernum,jdbcType=VARCHAR},
+      </if>
+      <if test="isanonymous != null" >
+        isanonymous = #{isanonymous,jdbcType=CHAR},
+      </if>
+      <if test="pflag != null" >
+        pflag = #{pflag,jdbcType=CHAR},
+      </if>
+      <if test="contactway != null" >
+        contactway = #{contactway,jdbcType=VARCHAR},
+      </if>
+      <if test="iscomment != null" >
+        iscomment = #{iscomment,jdbcType=CHAR},
+      </if>
+    </set>
+    where project_id = #{projectId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nap.entity.po.GdProject" >
+    update gd_project
+    set projectname = #{projectname,jdbcType=VARCHAR},
+      projectdesc = #{projectdesc,jdbcType=VARCHAR},
+      filepath = #{filepath,jdbcType=VARCHAR},
+      committime = #{committime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      typecode = #{typecode,jdbcType=VARCHAR},
+      lancode = #{lancode,jdbcType=VARCHAR},
+      ordernum = #{ordernum,jdbcType=VARCHAR},
+      isanonymous = #{isanonymous,jdbcType=CHAR},
+      pflag = #{pflag,jdbcType=CHAR},
+      contactway = #{contactway,jdbcType=VARCHAR},
+      iscomment = #{iscomment,jdbcType=CHAR}
+    where project_id = #{projectId,jdbcType=INTEGER}
+  </update>
+</mapper>

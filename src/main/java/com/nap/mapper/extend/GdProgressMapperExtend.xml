@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nap.mapper.extend.GdProgressMapperExtend">
+
+    <select id="queryByProjectId" parameterType="Integer" resultType="GdprogressExtend">
+        select p.progress_id progressId,p.title,p.content,p.createtime,
+        a.username
+        from gd_progress p,gd_admin a 
+        where p.writer = a.admin_id and p.project_id=#{projectId}
+        order by createtime desc
+    </select>
+
+</mapper>

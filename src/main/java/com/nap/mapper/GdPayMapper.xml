@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nap.mapper.GdPayMapper" >
+  <resultMap id="BaseResultMap" type="com.nap.entity.po.GdPay" >
+    <id column="pay_id" property="payId" jdbcType="INTEGER" />
+    <result column="paytime" property="paytime" jdbcType="TIMESTAMP" />
+    <result column="buyerid" property="buyerid" jdbcType="VARCHAR" />
+    <result column="tradestatus" property="tradestatus" jdbcType="VARCHAR" />
+    <result column="totalamount" property="totalamount" jdbcType="DOUBLE" />
+    <result column="tradeno" property="tradeno" jdbcType="VARCHAR" />
+    <result column="loginid" property="loginid" jdbcType="VARCHAR" />
+    <result column="ordernum" property="ordernum" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="subject" property="subject" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    pay_id, paytime, buyerid, tradestatus, totalamount, tradeno, loginid, ordernum, userid, 
+    subject, project_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.nap.entity.po.GdPayExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from gd_pay
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from gd_pay
+    where pay_id = #{payId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from gd_pay
+    where pay_id = #{payId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.nap.entity.po.GdPayExample" >
+    delete from gd_pay
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.nap.entity.po.GdPay" >
+    insert into gd_pay (pay_id, paytime, buyerid, 
+      tradestatus, totalamount, tradeno, 
+      loginid, ordernum, userid, 
+      subject, project_id)
+    values (#{payId,jdbcType=INTEGER}, #{paytime,jdbcType=TIMESTAMP}, #{buyerid,jdbcType=VARCHAR}, 
+      #{tradestatus,jdbcType=VARCHAR}, #{totalamount,jdbcType=DOUBLE}, #{tradeno,jdbcType=VARCHAR}, 
+      #{loginid,jdbcType=VARCHAR}, #{ordernum,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, 
+      #{subject,jdbcType=VARCHAR}, #{projectId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nap.entity.po.GdPay" >
+    insert into gd_pay
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="payId != null" >
+        pay_id,
+      </if>
+      <if test="paytime != null" >
+        paytime,
+      </if>
+      <if test="buyerid != null" >
+        buyerid,
+      </if>
+      <if test="tradestatus != null" >
+        tradestatus,
+      </if>
+      <if test="totalamount != null" >
+        totalamount,
+      </if>
+      <if test="tradeno != null" >
+        tradeno,
+      </if>
+      <if test="loginid != null" >
+        loginid,
+      </if>
+      <if test="ordernum != null" >
+        ordernum,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="subject != null" >
+        subject,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="payId != null" >
+        #{payId,jdbcType=INTEGER},
+      </if>
+      <if test="paytime != null" >
+        #{paytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyerid != null" >
+        #{buyerid,jdbcType=VARCHAR},
+      </if>
+      <if test="tradestatus != null" >
+        #{tradestatus,jdbcType=VARCHAR},
+      </if>
+      <if test="totalamount != null" >
+        #{totalamount,jdbcType=DOUBLE},
+      </if>
+      <if test="tradeno != null" >
+        #{tradeno,jdbcType=VARCHAR},
+      </if>
+      <if test="loginid != null" >
+        #{loginid,jdbcType=VARCHAR},
+      </if>
+      <if test="ordernum != null" >
+        #{ordernum,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="subject != null" >
+        #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.nap.entity.po.GdPayExample" resultType="java.lang.Integer" >
+    select count(*) from gd_pay
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update gd_pay
+    <set >
+      <if test="record.payId != null" >
+        pay_id = #{record.payId,jdbcType=INTEGER},
+      </if>
+      <if test="record.paytime != null" >
+        paytime = #{record.paytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.buyerid != null" >
+        buyerid = #{record.buyerid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tradestatus != null" >
+        tradestatus = #{record.tradestatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalamount != null" >
+        totalamount = #{record.totalamount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.tradeno != null" >
+        tradeno = #{record.tradeno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginid != null" >
+        loginid = #{record.loginid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ordernum != null" >
+        ordernum = #{record.ordernum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userid != null" >
+        userid = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.subject != null" >
+        subject = #{record.subject,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update gd_pay
+    set pay_id = #{record.payId,jdbcType=INTEGER},
+      paytime = #{record.paytime,jdbcType=TIMESTAMP},
+      buyerid = #{record.buyerid,jdbcType=VARCHAR},
+      tradestatus = #{record.tradestatus,jdbcType=VARCHAR},
+      totalamount = #{record.totalamount,jdbcType=DOUBLE},
+      tradeno = #{record.tradeno,jdbcType=VARCHAR},
+      loginid = #{record.loginid,jdbcType=VARCHAR},
+      ordernum = #{record.ordernum,jdbcType=VARCHAR},
+      userid = #{record.userid,jdbcType=INTEGER},
+      subject = #{record.subject,jdbcType=VARCHAR},
+      project_id = #{record.projectId,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nap.entity.po.GdPay" >
+    update gd_pay
+    <set >
+      <if test="paytime != null" >
+        paytime = #{paytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyerid != null" >
+        buyerid = #{buyerid,jdbcType=VARCHAR},
+      </if>
+      <if test="tradestatus != null" >
+        tradestatus = #{tradestatus,jdbcType=VARCHAR},
+      </if>
+      <if test="totalamount != null" >
+        totalamount = #{totalamount,jdbcType=DOUBLE},
+      </if>
+      <if test="tradeno != null" >
+        tradeno = #{tradeno,jdbcType=VARCHAR},
+      </if>
+      <if test="loginid != null" >
+        loginid = #{loginid,jdbcType=VARCHAR},
+      </if>
+      <if test="ordernum != null" >
+        ordernum = #{ordernum,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="subject != null" >
+        subject = #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where pay_id = #{payId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nap.entity.po.GdPay" >
+    update gd_pay
+    set paytime = #{paytime,jdbcType=TIMESTAMP},
+      buyerid = #{buyerid,jdbcType=VARCHAR},
+      tradestatus = #{tradestatus,jdbcType=VARCHAR},
+      totalamount = #{totalamount,jdbcType=DOUBLE},
+      tradeno = #{tradeno,jdbcType=VARCHAR},
+      loginid = #{loginid,jdbcType=VARCHAR},
+      ordernum = #{ordernum,jdbcType=VARCHAR},
+      userid = #{userid,jdbcType=INTEGER},
+      subject = #{subject,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=INTEGER}
+    where pay_id = #{payId,jdbcType=INTEGER}
+  </update>
+</mapper>

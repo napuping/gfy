@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nap.mapper.GdAdviceMapper" >
+  <resultMap id="BaseResultMap" type="com.nap.entity.po.GdAdvice" >
+    <id column="advice_id" property="adviceId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="advicetime" property="advicetime" jdbcType="TIMESTAMP" />
+    <result column="advicedesc" property="advicedesc" jdbcType="VARCHAR" />
+    <result column="isread" property="isread" jdbcType="CHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.nap.entity.po.GdAdvice" extends="BaseResultMap" >
+    <result column="advicecontent" property="advicecontent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    advice_id, user_id, advicetime, advicedesc, isread
+  </sql>
+  <sql id="Blob_Column_List" >
+    advicecontent
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.nap.entity.po.GdAdviceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from gd_advice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.nap.entity.po.GdAdviceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from gd_advice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from gd_advice
+    where advice_id = #{adviceId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from gd_advice
+    where advice_id = #{adviceId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.nap.entity.po.GdAdviceExample" >
+    delete from gd_advice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.nap.entity.po.GdAdvice" >
+    insert into gd_advice (advice_id, user_id, advicetime, 
+      advicedesc, isread, advicecontent
+      )
+    values (#{adviceId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{advicetime,jdbcType=TIMESTAMP}, 
+      #{advicedesc,jdbcType=VARCHAR}, #{isread,jdbcType=CHAR}, #{advicecontent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.nap.entity.po.GdAdvice" >
+    insert into gd_advice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="adviceId != null" >
+        advice_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="advicetime != null" >
+        advicetime,
+      </if>
+      <if test="advicedesc != null" >
+        advicedesc,
+      </if>
+      <if test="isread != null" >
+        isread,
+      </if>
+      <if test="advicecontent != null" >
+        advicecontent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="adviceId != null" >
+        #{adviceId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="advicetime != null" >
+        #{advicetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="advicedesc != null" >
+        #{advicedesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isread != null" >
+        #{isread,jdbcType=CHAR},
+      </if>
+      <if test="advicecontent != null" >
+        #{advicecontent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.nap.entity.po.GdAdviceExample" resultType="java.lang.Integer" >
+    select count(*) from gd_advice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update gd_advice
+    <set >
+      <if test="record.adviceId != null" >
+        advice_id = #{record.adviceId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.advicetime != null" >
+        advicetime = #{record.advicetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.advicedesc != null" >
+        advicedesc = #{record.advicedesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isread != null" >
+        isread = #{record.isread,jdbcType=CHAR},
+      </if>
+      <if test="record.advicecontent != null" >
+        advicecontent = #{record.advicecontent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update gd_advice
+    set advice_id = #{record.adviceId,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      advicetime = #{record.advicetime,jdbcType=TIMESTAMP},
+      advicedesc = #{record.advicedesc,jdbcType=VARCHAR},
+      isread = #{record.isread,jdbcType=CHAR},
+      advicecontent = #{record.advicecontent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update gd_advice
+    set advice_id = #{record.adviceId,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      advicetime = #{record.advicetime,jdbcType=TIMESTAMP},
+      advicedesc = #{record.advicedesc,jdbcType=VARCHAR},
+      isread = #{record.isread,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nap.entity.po.GdAdvice" >
+    update gd_advice
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="advicetime != null" >
+        advicetime = #{advicetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="advicedesc != null" >
+        advicedesc = #{advicedesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isread != null" >
+        isread = #{isread,jdbcType=CHAR},
+      </if>
+      <if test="advicecontent != null" >
+        advicecontent = #{advicecontent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where advice_id = #{adviceId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.nap.entity.po.GdAdvice" >
+    update gd_advice
+    set user_id = #{userId,jdbcType=INTEGER},
+      advicetime = #{advicetime,jdbcType=TIMESTAMP},
+      advicedesc = #{advicedesc,jdbcType=VARCHAR},
+      isread = #{isread,jdbcType=CHAR},
+      advicecontent = #{advicecontent,jdbcType=LONGVARCHAR}
+    where advice_id = #{adviceId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nap.entity.po.GdAdvice" >
+    update gd_advice
+    set user_id = #{userId,jdbcType=INTEGER},
+      advicetime = #{advicetime,jdbcType=TIMESTAMP},
+      advicedesc = #{advicedesc,jdbcType=VARCHAR},
+      isread = #{isread,jdbcType=CHAR}
+    where advice_id = #{adviceId,jdbcType=INTEGER}
+  </update>
+</mapper>
